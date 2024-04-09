@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.inventory.model.Category;
 import com.mycompany.inventory.response.CategoryResponseRest;
 import com.mycompany.inventory.services.ICategoryService;
 
@@ -37,6 +40,22 @@ public class CategoryRestController {
 	@GetMapping("/categories/{id}")
 	public ResponseEntity<CategoryResponseRest> searchById(@PathVariable Long id){
 		ResponseEntity<CategoryResponseRest> response = iCategoryService.searchById(id);
+		return response;
+	}
+	
+	/**
+	 * Endpoint to save a new category.
+	 * 
+	 * @param category The category object to be saved, provided in the request body.
+	 * @return ResponseEntity containing the response with the saved category 
+	 *         and metadata indicating the success of the operation. If the category 
+	 *         is successfully saved, a 200 OK response will be returned. If the category 
+	 *         is not saved (for example, due to validation errors), a 400 Bad Request 
+	 *         response will be returned.
+	 */
+	@PostMapping("/categories")
+	public ResponseEntity<CategoryResponseRest> saveCategory(@RequestBody Category category){
+		ResponseEntity<CategoryResponseRest> response = iCategoryService.save(category);
 		return response;
 	}
 }
