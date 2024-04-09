@@ -2,6 +2,7 @@ package com.mycompany.inventory.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,6 +76,22 @@ public class CategoryRestController {
 	@PutMapping("/categories/{id}")
 	public ResponseEntity<CategoryResponseRest> updateCategory(@RequestBody Category category,@PathVariable Long id){
 		ResponseEntity<CategoryResponseRest> response = iCategoryService.update(category, id);
+		return response;
+	}
+	
+	/**
+	 * Endpoint to delete a category by its ID.
+	 * 
+	 * @param id The ID of the category to be deleted, provided as a path variable.
+	 * @return ResponseEntity containing the response with metadata indicating 
+	 *         the success of the operation. If the category is successfully deleted, 
+	 *         a 200 OK response will be returned. If the category is not found, 
+	 *         a 404 Not Found response will be returned. If an error occurs during 
+	 *         the deletion process, a 500 Internal Server Error response will be returned.
+	 */
+	@DeleteMapping("/categories/{id}")
+	public ResponseEntity<CategoryResponseRest> deleteCategory(@PathVariable Long id){
+		ResponseEntity<CategoryResponseRest> response = iCategoryService.deleteById(id);
 		return response;
 	}
 }
