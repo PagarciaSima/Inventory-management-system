@@ -1,7 +1,7 @@
-<div class="dashboard-container">
+<div class="dashboard-container" [class.is-mobile]="mobileQuery.matches">
 
     <!-- TOOLBAR-->
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="dashboard-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h1 class="app-name">S-Inventory</h1>
 

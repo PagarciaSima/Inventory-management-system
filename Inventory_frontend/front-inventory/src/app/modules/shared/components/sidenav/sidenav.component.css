@@ -8,10 +8,14 @@
     right: 0;
 }
 
+.is-mobile .dashboard-toolbar{
+    position: fixed;
+    z-index: 2;
+}
+
 h1.app-name{
     margin-left: 8px;
 }
-
 
 .sidenav-container{
     flex: 1;
