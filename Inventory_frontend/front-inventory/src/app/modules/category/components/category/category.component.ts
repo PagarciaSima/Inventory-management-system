@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
+import { NewCategoryComponent } from '../new-category/new-category.component';
 
 @Component({
   selector: 'app-category',
@@ -9,7 +11,10 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 })
 export class CategoryComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService) {} 
+  constructor() {} 
+
+  private categoryService = inject(CategoryService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.getCategories();
@@ -41,7 +46,19 @@ export class CategoryComponent implements OnInit {
       this.datasource = new MatTableDataSource<CategoryElement>(dataCategory); 
     }
   }
+
+  openCategoryDialog(){
+    const dialogRef = this.dialog.open( NewCategoryComponent, {
+      width: '450px'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      // result es de tipo 'any'
+    });
+  }
 }
+
+
 export interface CategoryElement{
     description: string;
     id: number;
