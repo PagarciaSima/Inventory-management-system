@@ -19,5 +19,4 @@ public class ResponseRest {
 		
 		metadata.add(map);
 	}
-	
 }
