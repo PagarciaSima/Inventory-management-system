@@ -16,7 +16,6 @@ import { NewCategoryComponent } from './components/new-category/new-category.com
   imports: [
     CommonModule,
     MaterialModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ]
