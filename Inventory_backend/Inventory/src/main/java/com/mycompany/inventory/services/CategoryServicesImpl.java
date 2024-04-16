@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,11 @@ import com.mycompany.inventory.response.CategoryResponseRest;
 @Service
 public class CategoryServicesImpl implements ICategoryService{
 	
-	public final static String RESPUESTA_OK = "Respuesta OK";
-	public final static String RESPUESTA_NO_OK  = "Respuesta NO_OK";
-	public final static String CODIGO_OK = "200";
-	public final static String CODIGO_NO_OK = "-1";
-
-	@Autowired
 	private ICategoryDao categoryDao;
+	
+	public CategoryServicesImpl(ICategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
 	
 	/**
 	 * Retrieves all categories.
@@ -38,11 +35,11 @@ public class CategoryServicesImpl implements ICategoryService{
 		try {
 			List<Category> allCategories = (List<Category>) categoryDao.findAll();
 			response.getCategoryResponse().setCategory(allCategories);
-			response.setMetadata(RESPUESTA_OK, CODIGO_OK, "Respuesta exitosa");
+			response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Respuesta exitosa");
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.OK);
 
 		} catch(Exception e) {
-			response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Error al consultar categorias.");
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, "Error al consultar categorias.");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
@@ -67,15 +64,16 @@ public class CategoryServicesImpl implements ICategoryService{
 			if(category.isPresent()) {
 				list.add(category.get());
 				response.getCategoryResponse().setCategory(list);
-				response.setMetadata(RESPUESTA_OK, CODIGO_OK, "Categoría encontrada");
+				response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Categoría encontrada");
 				return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.OK);
 
 			} else {
-				response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Categoría no encontrada.");
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, "Categoría no encontrada.");
 				return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.NOT_FOUND);
 			}
 		} catch(Exception e) {
-			response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Error al consultar categoría por ID (" + id + ").");
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK,
+					"Error al consultar categoría por ID (" + id + ").");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
@@ -101,15 +99,15 @@ public class CategoryServicesImpl implements ICategoryService{
 			if(savedCategory != null) {
 				list.add(savedCategory);
 				response.getCategoryResponse().setCategory(list);
-				response.setMetadata(RESPUESTA_OK, CODIGO_OK, "Categoría guardada.");
+				response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Categoría guardada.");
 				return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.OK);
 			} else {
-				response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Categoría no guardada.");
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, "Categoría no guardada.");
 				return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.BAD_REQUEST);
 			}
 			
 		} catch(Exception e) {
-			response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, 
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, 
 					"Error al grabar categoria ID (" + category.getId() + ").");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -143,19 +141,20 @@ public class CategoryServicesImpl implements ICategoryService{
 				if (updatedCategory != null) {
 					list.add(updatedCategory);
 					response.getCategoryResponse().setCategory(list);
-					response.setMetadata(RESPUESTA_OK, CODIGO_OK, "Categoría actualizada.");
+					response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Categoría actualizada.");
 					return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.OK);
 				} else {
-					response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Categoría no actualizada.");
+					response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, "Categoría no actualizada.");
 					return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.BAD_REQUEST);
 				}
 			} else {
-				response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Categoría no encontrada.");
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, "Categoría no encontrada.");
 				return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.NOT_FOUND);
 			}
 			
 		} catch(Exception e) {
-			response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Error al actualizar categoría ID (" + id + ").");
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK,
+					"Error al actualizar categoría ID (" + id + ").");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
@@ -177,11 +176,12 @@ public class CategoryServicesImpl implements ICategoryService{
 		CategoryResponseRest response = new CategoryResponseRest();
 		try {
 			categoryDao.deleteById(id);
-			response.setMetadata(RESPUESTA_OK, CODIGO_OK, "Registro eliminado con éxito");
+			response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Registro eliminado con éxito");
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.OK);
 
 		} catch(Exception e) {
-			response.setMetadata(RESPUESTA_NO_OK , CODIGO_NO_OK, "Error al actualizar categoría ID (" + id + ").");
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK , ServiceKeys.CODIGO_NO_OK, 
+					"Error al actualizar categoría ID (" + id + ").");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest> (response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
