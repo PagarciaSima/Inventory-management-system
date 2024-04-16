@@ -41,4 +41,13 @@ export class CategoryService {
     const endpoint = `${this.base_url}/categories/${id}`;
     return this.http.delete(endpoint);
   }
+
+  /**
+   * Get by ID
+   */
+    getCategoryById(id: any){
+      const endpoint = `${this.base_url}/categories/${id}`;
+      return this.http.get(endpoint);
+    }
+  
 }
