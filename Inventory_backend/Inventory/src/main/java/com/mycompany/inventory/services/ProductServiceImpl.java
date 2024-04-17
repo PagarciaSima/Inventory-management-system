@@ -157,20 +157,6 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	/**
-	 * Decompresses the images of products in the given list.
-	 *
-	 * @param list    The list of products whose images need to be decompressed.
-	 * @param listAux The list of products with compressed images.
-	 */
-	private void decompressImageProductList(List<Product> list, List<Product> listAux) {
-		listAux.stream().forEach((product) -> {
-			byte[] descompressedImage = Util.decompressZLib(product.getPicture());
-			product.setPicture(descompressedImage);
-			list.add(product);
-		});
-	}
-
-	/**
 	 * Deletes a product by its unique identifier.
 	 *
 	 * @param id The unique identifier of the product to be deleted.
@@ -197,6 +183,58 @@ public class ProductServiceImpl implements IProductService {
 					"Error al eliminar producto (" + id + ").");
 			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	/**
+	 * Retrieves a list of all products.
+	 *
+	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the
+	 *         response data. - If products are found, returns HTTP status 200 (OK)
+	 *         along with the list of products. - If no products are found, returns
+	 *         HTTP status 404 (NOT_FOUND) with a message indicating the absence of
+	 *         products. - If there is an error during the retrieval operation,
+	 *         returns HTTP status 500 (INTERNAL_SERVER_ERROR) with an appropriate
+	 *         error message.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<ProductResponseRest> search() {
+		ProductResponseRest response = new ProductResponseRest();
+		List<Product> list = new ArrayList<>();
+		List<Product> listAux = new ArrayList<>();
+		try {
+			listAux = (List<Product>) productDao.findAll();
+			if (listAux.size() > 0) {
+				decompressImageProductList(list, listAux);
+				response.getProductResponse().setProducts(list);
+				response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Listado completo de productos.");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
+			} else {
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK,
+						"No hay productos creados.");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK,
+					"Error al generar el listado de productos.");
+			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Decompresses the images of products in the given list.
+	 *
+	 * @param list    The list of products whose images need to be decompressed.
+	 * @param listAux The list of products with compressed images.
+	 */
+	private void decompressImageProductList(List<Product> list, List<Product> listAux) {
+		listAux.stream().forEach((product) -> {
+			byte[] descompressedImage = Util.decompressZLib(product.getPicture());
+			product.setPicture(descompressedImage);
+			list.add(product);
+		});
 	}
 
 }

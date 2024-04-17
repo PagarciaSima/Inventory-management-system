@@ -108,4 +108,21 @@ public class ProductRestController {
 		ResponseEntity<ProductResponseRest> response = productService.deleteById(id);
 		return response;
 	}
+
+	/**
+	 * Retrieves a list of all products.
+	 *
+	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the
+	 *         response data. - If products are found, returns HTTP status 200 (OK)
+	 *         along with the list of products. - If no products are found, returns
+	 *         HTTP status 404 (NOT_FOUND) with a message indicating the absence of
+	 *         products. - If there is an error during the retrieval operation,
+	 *         returns HTTP status 500 (INTERNAL_SERVER_ERROR) with an appropriate
+	 *         error message.
+	 */
+	@GetMapping("/products")
+	public ResponseEntity<ProductResponseRest> search() {
+		ResponseEntity<ProductResponseRest> response = productService.search();
+		return response;
+	}
 }
