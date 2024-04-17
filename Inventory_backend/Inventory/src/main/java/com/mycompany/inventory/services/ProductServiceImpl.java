@@ -17,12 +17,12 @@ import com.mycompany.inventory.response.ProductResponseRest;
 @Service
 public class ProductServiceImpl implements IProductService {
 	
-	private ICategoryDao iCategoriDao;
-	private IProductDao iProductDao;
+	private ICategoryDao categoriDao;
+	private IProductDao productDao;
 	
 	public ProductServiceImpl(ICategoryDao iCategoriDao, IProductDao iProductDao){
-		this.iCategoriDao = iCategoriDao;
-		this.iProductDao = iProductDao;
+		this.categoriDao = iCategoriDao;
+		this.productDao = iProductDao;
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements IProductService {
 		ProductResponseRest response = new ProductResponseRest();
 		List<Product> list = new ArrayList<>();
 		try {
-			Optional<Category> category = iCategoriDao.findById(categoryId);
+			Optional<Category> category = categoriDao.findById(categoryId);
 			if(category.isPresent()) {
 				product.setCategory(category.get());
 			} else {
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements IProductService {
 				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
 			}
 			
-			Product productSaved = iProductDao.save(product);
+			Product productSaved = productDao.save(product);
 			if(productSaved != null) {
 				list.add(productSaved);
 				response.getProductResponse().setProducts(list);

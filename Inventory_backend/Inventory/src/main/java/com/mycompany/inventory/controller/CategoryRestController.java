@@ -1,6 +1,5 @@
 package com.mycompany.inventory.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +20,11 @@ import com.mycompany.inventory.services.ICategoryService;
 @RequestMapping("/api/v1")
 public class CategoryRestController {
 	
-	@Autowired
 	private ICategoryService iCategoryService;
+	
+	public CategoryRestController(ICategoryService categoryService) {
+		this.iCategoryService = categoryService;
+	}
 	
 	/**
 	 * Retrieves all available categories.
