@@ -111,5 +111,58 @@ public class ProductServiceImpl implements IProductService {
 			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/**
+	 * Searches for products by their name.
+	 *
+	 * @param name The name of the products to search for.
+	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the response data.
+	 *         - If products are found, returns HTTP status 200 (OK) along with the list of products.
+	 *         - If no products are found, returns HTTP status 404 (NOT_FOUND) with a message indicating the absence of products.
+	 *         - If there is an error during the search operation, returns HTTP status 500 (INTERNAL_SERVER_ERROR)
+	 *           with an appropriate error message.
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<ProductResponseRest> searchByName(String name) {
+		ProductResponseRest response = new ProductResponseRest();
+		List<Product> list = new ArrayList<>();
+		List<Product> listAux = new ArrayList<>();
+		try {
+			listAux = productDao.findByNameContainingIgnoreCase(name);
+			if(listAux.size() > 0) {
+				decompressImageProductList(list, listAux);
+				
+				response.getProductResponse().setProducts(list);
+				response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK
+						, "Producto encontrado (" + name +").");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
+			} else {
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK, 
+						"Producto no encontrado (nombre="  + name + ").");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		}catch(Exception e) {
+			e.getStackTrace();
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK, 
+					"Error al buscar producto (nombre=" + name + ").");
+			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+	 * Decompresses the images of products in the given list.
+	 *
+	 * @param list The list of products whose images need to be decompressed.
+	 * @param listAux The list of products with compressed images.
+	 */
+	private void decompressImageProductList(List<Product> list, List<Product> listAux) {
+		listAux.stream().forEach((product) -> {
+			byte [] descompressedImage = Util.decompressZLib(product.getPicture());
+			product.setPicture(descompressedImage);
+			list.add(product);
+		});
+	}
 
 }
