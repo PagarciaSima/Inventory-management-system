@@ -222,7 +222,74 @@ public class ProductServiceImpl implements IProductService {
 			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/**
+	 * Updates an existing product in the database.
+	 *
+	 * @param product    The product with the new values to update.
+	 * @param categoryId The ID of the category to which the product belongs.
+	 * @param id         The ID of the product to update.
+	 * @return An HTTP response with the details of the updated product or an error message if the product or category is not found.
+	 */
+	@Override
+	@Transactional
+	public ResponseEntity<ProductResponseRest> update(Product product, Long categoryId, Long id) {
+		ProductResponseRest response = new ProductResponseRest();
+		List<Product> list = new ArrayList<>();
+		try {
+			Optional<Category> category = categoriDao.findById(categoryId);
+			if (category.isPresent()) {
+				product.setCategory(category.get());
+			} else {
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK,
+						"Categoría no encontrada (" + categoryId + ").");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
 
+			Optional<Product> productSearched = productDao.findById(id);
+			
+			if (productSearched.isPresent()) {
+				Product productToUpdate = setSearchedProductAtributes(product, productSearched);
+				
+				if(productToUpdate != null) {
+					list.add(productToUpdate);
+					response.getProductResponse().setProducts(list);
+					response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK, "Producto actualizado (" + id + ").");
+					return new ResponseEntity<ProductResponseRest>(response, HttpStatus.CREATED);
+				} else {
+					response.setMetadata(ServiceKeys.RESPUESTA_OK, ServiceKeys.CODIGO_OK,
+							"Producto no actualizado (" + id + ").");
+					return new ResponseEntity<ProductResponseRest>(response, HttpStatus.BAD_REQUEST);
+				}				
+				
+			} else {
+				response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK, "No existe ningún producto con id = " + id + ").");
+				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			response.setMetadata(ServiceKeys.RESPUESTA_NO_OK, ServiceKeys.CODIGO_NO_OK, "Error al guardar producto.");
+			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	/**
+	 * Sets the attributes of the searched product to the values of the provided product and saves it to the database.
+	 *
+	 * @param product         The product with the new attribute values.
+	 * @param productSearched The Optional containing the product to update.
+	 * @return The updated product entity.
+	 */
+	private Product setSearchedProductAtributes(Product product, Optional<Product> productSearched) {
+		productSearched.get().setQuantity(product.getQuantity());
+		productSearched.get().setCategory(product.getCategory());
+		productSearched.get().setName(product.getName());
+		productSearched.get().setPicture(product.getPicture());
+		productSearched.get().setPrice(product.getPrice());
+		Product productToUpdate = productDao.save(productSearched.get());
+		return productToUpdate;
+	}
+	
 	/**
 	 * Decompresses the images of products in the given list.
 	 *
@@ -236,5 +303,5 @@ public class ProductServiceImpl implements IProductService {
 			list.add(product);
 		});
 	}
-
+	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,8 +43,11 @@ public class ProductRestController {
 	 *                     data.
 	 */
 	@PostMapping("/products")
-	public ResponseEntity<ProductResponseRest> save(@RequestParam("picture") MultipartFile picture,
-			@RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("quantity") int quantity,
+	public ResponseEntity<ProductResponseRest> save(
+			@RequestParam("picture") MultipartFile picture,
+			@RequestParam("name") String name, 
+			@RequestParam("price") int price, 
+			@RequestParam("quantity") int quantity,
 			@RequestParam("categoryId") Long categoryId) throws IOException {
 
 		Product product = new Product();
@@ -123,6 +127,36 @@ public class ProductRestController {
 	@GetMapping("/products")
 	public ResponseEntity<ProductResponseRest> search() {
 		ResponseEntity<ProductResponseRest> response = productService.search();
+		return response;
+	}
+	
+	/**
+	 * Updates an existing product with the provided information.
+	 *
+	 * @param picture     The new picture file for the product.
+	 * @param name        The new name for the product.
+	 * @param price       The new price for the product.
+	 * @param quantity    The new quantity for the product.
+	 * @param categoryId  The new category ID for the product.
+	 * @param id          The ID of the product to be updated.
+	 * @return ResponseEntity with the updated product information in the response body.
+	 * @throws IOException if an I/O exception occurs while processing the picture file.
+	 */
+	@PutMapping("/products/{id}")
+	public ResponseEntity<ProductResponseRest> update(
+			@RequestParam("picture") MultipartFile picture,
+			@RequestParam("name") String name, 
+			@RequestParam("price") int price, 
+			@RequestParam("quantity") int quantity,
+			@RequestParam("categoryId") Long categoryId,
+			@PathVariable Long id) throws IOException {
+		
+		Product product = new Product();
+		product.setName(name);
+		product.setQuantity(quantity);
+		product.setPrice(price);
+		product.setPicture(Util.compressZLib(picture.getBytes()));
+		ResponseEntity<ProductResponseRest> response = productService.update(product, categoryId, id);
 		return response;
 	}
 }
