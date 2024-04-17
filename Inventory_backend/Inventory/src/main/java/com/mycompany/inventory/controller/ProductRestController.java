@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,20 +72,40 @@ public class ProductRestController {
 		ResponseEntity<ProductResponseRest> response = productService.searchById(id);
 		return response;
 	}
-	
+
 	/**
 	 * Searches for products by their name.
 	 *
 	 * @param name The name of the products to search for.
-	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the response data.
-	 *         - If products are found, returns HTTP status 200 (OK) along with the list of products.
-	 *         - If no products are found, returns HTTP status 404 (NOT_FOUND) with a message indicating the absence of products.
-	 *         - If there is an error during the search operation, returns HTTP status 500 (INTERNAL_SERVER_ERROR)
-	 *           with an appropriate error message.
+	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the
+	 *         response data. - If products are found, returns HTTP status 200 (OK)
+	 *         along with the list of products. - If no products are found, returns
+	 *         HTTP status 404 (NOT_FOUND) with a message indicating the absence of
+	 *         products. - If there is an error during the search operation, returns
+	 *         HTTP status 500 (INTERNAL_SERVER_ERROR) with an appropriate error
+	 *         message.
 	 */
 	@GetMapping("/products/filter/{name}")
-	public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name){
+	public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name) {
 		ResponseEntity<ProductResponseRest> response = productService.searchByName(name);
+		return response;
+	}
+
+	/**
+	 * Deletes a product by its unique identifier.
+	 *
+	 * @param id The unique identifier of the product to be deleted.
+	 * @return ResponseEntity<ProductResponseRest> A ResponseEntity containing the
+	 *         response data. - If the product is successfully deleted, returns HTTP
+	 *         status 200 (OK) along with a success message. - If no product is
+	 *         found with the specified ID, returns HTTP status 404 (NOT_FOUND) with
+	 *         a message indicating the absence of the product. - If there is an
+	 *         error during the deletion operation, returns HTTP status 500
+	 *         (INTERNAL_SERVER_ERROR) with an appropriate error message.
+	 */
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<ProductResponseRest> deleteById(@PathVariable Long id) {
+		ResponseEntity<ProductResponseRest> response = productService.deleteById(id);
 		return response;
 	}
 }
