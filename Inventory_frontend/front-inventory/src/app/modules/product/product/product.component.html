@@ -44,7 +44,7 @@
              <!-- Category column -->
              <ng-container matColumnDef="category">
                 <th mat-header-cell *matHeaderCellDef>Categoría</th>
-                <td mat-cell *matCellDef="let element">{{element.category}}</td>
+                <td mat-cell *matCellDef="let element">{{element.category.name}}</td>
             </ng-container>
              <!-- Picture column -->
              <ng-container matColumnDef="picture">
@@ -55,8 +55,10 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                 <td mat-cell *matCellDef="let element; let i=index;">
-                    <button mat-icon-button color="accent">
-                        <mat-icon aria-label="Edit">edit</mat-icon>
+                    <button mat-icon-button color="accent" (click)="edit(element.id, element.name, element.price, element.quantity, element.category);">
+                        <mat-icon aria-label="Edit">
+                            edit
+                        </mat-icon>
                     </button>
                     <button mat-icon-button color="accent">
                         <mat-icon aria-label="Delete">delete</mat-icon>
