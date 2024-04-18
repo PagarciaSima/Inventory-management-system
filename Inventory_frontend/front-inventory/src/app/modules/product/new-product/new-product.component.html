@@ -3,13 +3,13 @@
     <form [formGroup]="productForm">
         <div class="product-container">
             <mat-form-field>
-                <input matInput placeholder="Nombre" formControlName="name" required/>
+                <input matInput placeholder="Nombre*" formControlName="name" required/>
             </mat-form-field>
             <mat-form-field>
-                <input matInput type="number" placeholder="Precio" formControlName="price" required/>
+                <input matInput type="number" placeholder="Precio*" formControlName="price" required/>
             </mat-form-field>
             <mat-form-field>
-                <input matInput type="number" placeholder="Cantidad" formControlName="quantity" required/>
+                <input matInput type="number" placeholder="Cantidad*" formControlName="quantity" required/>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Categoría</mat-label>
@@ -19,6 +19,15 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
+            <div>
+                <mat-label>Foto: </mat-label>
+                <label for="file-upload" class="subir">
+                    Subir archivo
+                </label>
+                <input id="file-upload" type="file" formControlName="picture" accept="image/png, image/jpeg" (change)="onFileChange($event)" class="input-file"/>
+                <span class="margin-left-10">{{nameImg}}</span>
+            </div>
 
         </div>
     </form>

@@ -14,7 +14,11 @@ export class NewProductComponent implements OnInit{
  
   public productForm!: FormGroup;
   public estadoFormulario: string = "Agregar Producto";
-  categories: Category [] = [];
+
+  public categories: Category [] = [];
+  private selectedFile: any;
+  nameImg: string = "";
+
   private formBuilder = inject(FormBuilder);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
@@ -34,6 +38,31 @@ export class NewProductComponent implements OnInit{
   }
 
   onSave(){
+    let data = {
+      name: this.productForm.get('name')?.value,
+      price: this.productForm.get('price')?.value,
+      quantity: this.productForm.get('quantity')?.value,
+      category: this.productForm.get('category')?.value,
+      picture: this.selectedFile
+    }
+
+    const uploadImageData = new FormData();
+    uploadImageData.append('picture', data.picture, data.picture.name);
+    uploadImageData.append('name', data.name);
+    uploadImageData.append('price', data.price);
+    uploadImageData.append('quantity', data.quantity);
+    uploadImageData.append('price', data.price);
+    uploadImageData.append('categoryId', data.category);
+
+    this.productService.saveProduct(uploadImageData)
+      .subscribe({
+        next: (data: any) => {
+          this.dialogRef.close(1);
+        },
+        error: (error: any) => {
+          this.dialogRef.close(2);
+        }
+      })
 
   }
 
@@ -51,6 +80,12 @@ export class NewProductComponent implements OnInit{
           console.log("Error al consultar categorías");
         }
       });
+  }
+
+  onFileChange(event: any){
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
+    this.nameImg = this.selectedFile.name;
   }
 }
 
