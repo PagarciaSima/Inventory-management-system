@@ -5,6 +5,7 @@ import { ProductService } from '../../shared/services/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { NewProductComponent } from '../new-product/new-product.component';
+import { ConfirmComponent } from '../../shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-product',
@@ -79,7 +80,6 @@ export class ProductComponent implements OnInit{
   }
 
   edit(id: number, name: string, price: number, quantity: number, category: any){
-    console.log("Dentro de edit")
     const dialogRef = this.dialog.open( NewProductComponent, {
       width: '450px',
       data: {id: id, name: name, price: price, quantity: quantity, category: category}
@@ -87,10 +87,26 @@ export class ProductComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result == 1){
-        this.openSnackBar("Producto aactualizado", "Éxito");
+        this.openSnackBar("Producto actualizado", "Éxito");
         this.getProducts();
       } else if (result == 2){
         this.openSnackBar("Se ha producido un error al actualizar el producto", "Error");
+      }
+    });
+  }
+
+  delete(id: number){
+    const dialogRef = this.dialog.open( ConfirmComponent, {
+      width: '450px',
+      data: {id: id, module: "product"}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if(result == 1){
+        this.openSnackBar("Producto eliminado", "Éxito");
+        this.getProducts();
+      } else if (result == 2){
+        this.openSnackBar("Se ha producido un error al eliminar el producto", "Error");
       }
     });
   }
