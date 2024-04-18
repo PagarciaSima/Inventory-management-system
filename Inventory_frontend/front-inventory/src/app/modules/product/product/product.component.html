@@ -2,9 +2,9 @@
     <h2 class="alinear-centro">Listado de Productos</h2>
     <mat-card-header>
         <div>
-            <mat-form-field hintLabel="Busque Productos por su ID" appearance="fill">
-                <mat-label>Buscar Productos por ID</mat-label>
-                <input matInput #input>
+            <mat-form-field hintLabel="Busque Productos por nombre" appearance="fill">
+                <mat-label>Buscar Productos por nombre</mat-label>
+                <input matInput #input (keyup)="buscar(input.value)">
             </mat-form-field>
         </div>
     </mat-card-header>
