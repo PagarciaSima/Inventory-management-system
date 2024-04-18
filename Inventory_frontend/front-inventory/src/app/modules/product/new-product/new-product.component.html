@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{estadoFormulario}}</h2>
+<mat-dialog-content>
+    <form [formGroup]="productForm">
+        <div class="product-container">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" formControlName="name" required/>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Precio" formControlName="price" required/>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Cantidad" formControlName="quantity" required/>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Categoría</mat-label>
+                <mat-select formControlName="category">
+                    <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                        {{cat.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="onSave()" [disabled]="productForm.invalid">
+        <mat-icon>save</mat-icon> Guardar
+    </button>
+    <button mat-button color="primary" (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>

@@ -14,11 +14,11 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class CategoryComponent implements OnInit {
 
-  constructor() {} 
-
   private categoryService = inject(CategoryService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+
+  constructor() {} 
 
   ngOnInit(): void {
     this.getCategories();
