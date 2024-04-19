@@ -11,7 +11,7 @@ import { MaterialModule } from '../shared/material.module';
 @NgModule({
   declarations: [
     DashboardComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     CommonModule,

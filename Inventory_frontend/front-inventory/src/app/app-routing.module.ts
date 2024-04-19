@@ -9,7 +9,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(
     routes,
-    {enableTracing: false, useHash: true}
+    {enableTracing: false, useHash: false}
   ), DashboardRoutingModule
 
   ],
