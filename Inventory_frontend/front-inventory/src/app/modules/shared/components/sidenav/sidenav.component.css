@@ -8,6 +8,13 @@
     right: 0;
 }
 
+.cerrar-sesion{
+    display: flex;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
 .is-mobile .dashboard-toolbar{
     position: fixed;
     z-index: 2;
@@ -47,9 +54,9 @@ div ul {
     margin-top: 20 px;
 }
 
-.padding-8{
-    padding-left: 8px;
-    padding-right: 8px;
+.padding-16{
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 .icono-mr{

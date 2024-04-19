@@ -17,8 +17,10 @@
                         <mat-icon>person_outline</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                        <mat-icon>exit_to_app</mat-icon>
-                        Cerrar Sesión                     
+                        <div class="cerrar-sesion" (click)="logout()">
+                            <mat-icon>exit_to_app</mat-icon>
+                            Cerrar Sesión  
+                        </div>                   
                     </mat-menu>
                 </li>
             </ul>
@@ -32,8 +34,7 @@
                  <!-- PROFILE -->
                  <div class="profile-card">
                     <div class="header">
-                        <h2 class="padding-8">Pablo García Simavilla</h2>
-                        <h4 class="padding-8">pgarcsim2334@hotmail.com</h4>
+                        <h2 class="padding-16">{{username}}</h2>
                     </div>
                  </div>              
                  <mat-divider></mat-divider>
