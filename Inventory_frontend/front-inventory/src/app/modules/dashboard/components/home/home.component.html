@@ -1,8 +1,18 @@
 <div class="grafico my-5">
     <h2>Welcome!</h2>
+
+    <!-- Chart doughnut -->
+    <div class="chartContainer px-5 py-5">
+        <canvas id="canvas-doughnut" width="400" height="400">
+            {{chartDoughnut}}
+        </canvas>
+    </div>
+
+    <!-- Chart bar -->
     <div class="chartContainer px-5">
         <canvas id="canvas-bar" width="400" height="400">
             {{chartBar}}
         </canvas>
     </div>
+    
 </div>

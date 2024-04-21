@@ -11,6 +11,8 @@ import { ProductService } from 'src/app/modules/shared/services/product.service'
 export class HomeComponent implements OnInit{
 
   chartBar: any;
+  chartDoughnut: any;
+
   private productService: ProductService = inject(ProductService);
   ngOnInit(): void {
     this.getProducts();
@@ -42,8 +44,20 @@ export class HomeComponent implements OnInit{
 
       });
 
+      // Gráfico barras
       this.chartBar = new Chart('canvas-bar', {
         type: 'bar',
+        data: {
+          labels: nameProduct,
+          datasets: [
+            {label: 'Productos', data: quantity}
+          ]
+        }
+      });
+
+      // Gráfico doughnut
+      this.chartDoughnut = new Chart('canvas-doughnut', {
+        type: 'doughnut',
         data: {
           labels: nameProduct,
           datasets: [
