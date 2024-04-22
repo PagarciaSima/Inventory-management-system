@@ -72,8 +72,8 @@ public class ProductExcelExporter {
 			int columnCount = 0;
 			createCell(row, columnCount++, String.valueOf(product.getId()), style);
 			createCell(row, columnCount++, product.getName(), style);
-			createCell(row, columnCount++, String.valueOf(product.getPrice()), style);
-			createCell(row, columnCount++, String.valueOf(product.getQuantity()), style);
+			createCell(row, columnCount++, product.getPrice(), style);
+			createCell(row, columnCount++, product.getQuantity(), style);
 			createCell(row, columnCount++, product.getCategory().getName(), style);
 		}
 	}

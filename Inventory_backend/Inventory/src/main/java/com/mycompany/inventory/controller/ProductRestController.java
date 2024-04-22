@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.inventory.model.Product;
-import com.mycompany.inventory.response.CategoryResponseRest;
 import com.mycompany.inventory.response.ProductResponseRest;
 import com.mycompany.inventory.services.IProductService;
 import com.mycompany.inventory.util.CategoryExcelExporter;
+import com.mycompany.inventory.util.ProductExcelExporter;
 import com.mycompany.inventory.util.Util;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -178,8 +178,8 @@ public class ProductRestController {
 		response.setHeader(headerKey, headerValue);
 
 		ResponseEntity<ProductResponseRest> productResponseRest = productService.search();
-		CategoryExcelExporter excelExporter = new CategoryExcelExporter(
-				productResponseRest.getBody().getProductResponse().getCategory());
+		ProductExcelExporter excelExporter = new ProductExcelExporter(
+				productResponseRest.getBody().getProductResponse().getProducts());
 		excelExporter.export(response);
 	}
 }
