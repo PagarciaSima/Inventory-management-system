@@ -108,7 +108,13 @@ public class CategoryRestController {
 		ResponseEntity<CategoryResponseRest> response = iCategoryService.deleteById(id);
 		return response;
 	}
-
+	
+	/**
+	 * Handler method for exporting category data to an Excel file.
+	 *
+	 * @param response HttpServletResponse object to handle the response
+	 * @throws IOException if an I/O error occurs while handling the response
+	 */
 	@GetMapping("/categories/export/excel")
 	public void exportToExcel(HttpServletResponse response) throws IOException {
 		response.setContentType("application/octet-stream");

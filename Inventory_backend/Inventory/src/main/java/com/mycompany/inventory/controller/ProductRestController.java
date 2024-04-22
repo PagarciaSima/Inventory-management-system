@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.inventory.model.Product;
+import com.mycompany.inventory.response.CategoryResponseRest;
 import com.mycompany.inventory.response.ProductResponseRest;
 import com.mycompany.inventory.services.IProductService;
+import com.mycompany.inventory.util.CategoryExcelExporter;
 import com.mycompany.inventory.util.Util;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
@@ -158,5 +162,24 @@ public class ProductRestController {
 		product.setPicture(Util.compressZLib(picture.getBytes()));
 		ResponseEntity<ProductResponseRest> response = productService.update(product, categoryId, id);
 		return response;
+	}
+	
+	/**
+	 * Handler method for exporting Product data to an Excel file.
+	 *
+	 * @param response HttpServletResponse object to handle the response
+	 * @throws IOException if an I/O error occurs while handling the response
+	 */
+	@GetMapping("/products/export/excel")
+	public void exportToExcel(HttpServletResponse response) throws IOException {
+		response.setContentType("application/octet-stream");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=result_products.xlsx";
+		response.setHeader(headerKey, headerValue);
+
+		ResponseEntity<ProductResponseRest> productResponseRest = productService.search();
+		CategoryExcelExporter excelExporter = new CategoryExcelExporter(
+				productResponseRest.getBody().getProductResponse().getCategory());
+		excelExporter.export(response);
 	}
 }
