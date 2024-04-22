@@ -10,9 +10,12 @@
     </mat-card-header>
     <mat-card-header>    
         <div class="right">
-            <ul>
+            <ul class="d-flex">
                 <li>
                     <button mat-raised-button color="primary" (click)="openProductDialog()">Agregar Productos</button>
+                </li>
+                <li>
+                    <button mat-button color="primary" (click)="exportExcel()">Exportar a Excel</button>
                 </li>
             </ul>
         </div>
