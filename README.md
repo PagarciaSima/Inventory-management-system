@@ -71,6 +71,7 @@ A continuación se muestran algunas capturas de pantalla de la interfaz de usuar
 4. **Descargar la imagen de Keycloak desde DockerHub**:
    - Abre una terminal o línea de comandos.
    - Ejecuta el siguiente comando para descargar la imagen de Keycloak desde DockerHub:
+
      ```
      docker pull pabgarsi/spring_angular:keycloak-24.0.3
      ```
