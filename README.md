@@ -67,3 +67,10 @@ A continuación se muestran algunas capturas de pantalla de la interfaz de usuar
    - Ve a la sección de "Users" y haz clic en "Add user".
    - Ingresa los detalles del usuario admin y haz clic en "Save".
    - Repite el proceso para crear el usuario user.
+
+4. **Descargar la imagen de Keycloak desde DockerHub**:
+   - Abre una terminal o línea de comandos.
+   - Ejecuta el siguiente comando para descargar la imagen de Keycloak desde DockerHub:
+     ```
+     docker pull pabgarsi/spring_angular:keycloak-24.0.3
+     ```
