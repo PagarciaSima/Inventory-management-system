@@ -10,7 +10,6 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.mycompany.inventory.model.Category;
 import com.mycompany.inventory.model.Product;
 
 import jakarta.servlet.ServletOutputStream;
